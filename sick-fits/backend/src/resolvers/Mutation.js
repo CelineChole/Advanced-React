@@ -1,4 +1,4 @@
-const Mutations = {
+const mutations = {
   async createItem(parent, args, ctx, info) {
     // todo: check if they are logged in
 
@@ -36,4 +36,4 @@ const Mutations = {
   }
 };
 
-module.exports = Mutations;
+module.exports = mutations;
