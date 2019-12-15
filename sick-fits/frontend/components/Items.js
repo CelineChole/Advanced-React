@@ -1,10 +1,11 @@
-import React, { Component } from 'react'
-import { Query } from 'react-apollo'
-import gql from 'graphql-tag'
-import styled from 'styled-components'
-import Item from './Item'
+import React, { Component } from "react";
+import { Query } from "react-apollo";
+import gql from "graphql-tag";
+import styled from "styled-components";
+import Item from "./Item";
+import Pagination from "../components/Pagination";
 
-const ALL_ITEMS_QUERY = gql `
+const ALL_ITEMS_QUERY = gql`
   query ALL_ITEMS_QUERY {
     items {
       id
@@ -15,11 +16,11 @@ const ALL_ITEMS_QUERY = gql `
       largeImage
     }
   }
-`
+`;
 
 const Center = styled.div`
   text-align: center;
-`
+`;
 
 const ItemsList = styled.div`
   display: grid;
@@ -27,24 +28,35 @@ const ItemsList = styled.div`
   grid-gap: 60px;
   max-width: ${props => props.theme.maxWidth};
   margin: 0 auto;
-`
+`;
 
 export default class Items extends Component {
   render() {
     return (
       <Center>
-        <Query query={ALL_ITEMS_QUERY}>
-           {({ data, error, loading }) => {
-             if (loading) return <p>Loading...</p>
-             if (error) return <p><Error className=""></Error></p>
-             return <ItemsList>
-              {data.items.map(item => <Item item={item} key={item.id} />)}
-             </ItemsList>
-           }}
-        </Query>
+        <Pagination page={this.props.page} />
+          <Query query={ALL_ITEMS_QUERY}>
+            {({ data, error, loading }) => {
+              if (loading) return <p>Loading...</p>;
+              if (error)
+                return (
+                  <p>
+                    <Error className=""></Error>
+                  </p>
+                );
+              return (
+                <ItemsList>
+                  {data.items.map(item => (
+                    <Item item={item} key={item.id} />
+                  ))}
+                </ItemsList>
+              );
+            }}
+          </Query>
+        <Pagination />
       </Center>
-    )
+    );
   }
 }
 
-export { ALL_ITEMS_QUERY }
+export { ALL_ITEMS_QUERY };
